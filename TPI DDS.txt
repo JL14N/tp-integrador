@@ -1,0 +1,9 @@
+TPI DDS
+Personaje: id, nombre, fecha_aparicion, puntos_poder, id_equipo (FK), id_franquicia (FK)
+PersonajeXPoder: id_personaje, nombre_poder
+
+Equipo: id, nombre, fecha_aparicion, bando, id_residencia (FK)
+Lugar: id, nombre, existe, ubicacion
+
+Pelicula: id, nombre, fecha_estreno, id_franquicia (FK), rating
+Franquicia: id, nombre, fecha_creacion
