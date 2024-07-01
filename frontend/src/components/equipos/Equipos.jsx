@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
-import PersonajesBuscar from "./PersonajesBuscar";
-import PersonajesListado from "./PersonajesListado";
-import PersonajesRegistro from "./PersonajesRegistro";
-import { personajesService } from "../../services/personajes.service";
-import { poderesService } from "../../services/poderes.service";
+import BuscarTodos from "../Buscar";
+import EquiposListado from "./EquiposListado";
+import EquiposRegistro from "./EquiposRegistro";
+import { equiposService } from "../../services/equipos.service";
+import { lugaresService } from "../../services/lugares.service";
 import modalDialogService from "../../services/modalDialog.service";
 
 
 
-function Personajes() {
+function Equipos() {
   const TituloAccionABMC = {
     A: "(Agregar)",
     B: "(Eliminar)",
@@ -28,15 +28,15 @@ function Personajes() {
   const [Pagina, setPagina] = useState(1);
   const [Paginas, setPaginas] = useState([]);
 
-  const [Poderes, setPoderes] = useState(null);
+  const [Lugares, setLugares] = useState(null);
 
   // cargar al "montar" el componente, solo la primera vez (por la dependencia [])
   useEffect(() => {
-    async function BuscarPoderes() {
-      let data = await poderesService.Buscar();
-      setPoderes(data);
+    async function BuscarLugares() {
+      let data = await lugaresService.Buscar();
+      setLugares(data);
     }
-    BuscarPoderes();
+    BuscarLugares();
   }, []);
 
   async function Buscar(_pagina) {
@@ -48,7 +48,7 @@ function Personajes() {
       _pagina = Pagina;
     }
     modalDialogService.BloquearPantalla(true);
-    const data = await personajesService.Buscar(Nombre, Activo, _pagina);
+    const data = await equiposService.Buscar(Nombre, Activo, _pagina);
     modalDialogService.BloquearPantalla(false);
     setItems(data.Items);
     setRegistrosTotal(data.RegistrosTotal);
@@ -62,14 +62,19 @@ function Personajes() {
   }
 
   async function BuscarPorId(id, accionABMC) {
-    const data = await personajesService.BuscarPorId(id);
+    console.log('0');
+    const data = await equiposService.BuscarPorId(id);
+    console.log(',5');
     setItem(data);
+    console.log(',75');
     setAccionABMC(accionABMC);
+    console.log('1');
   }
   
 
   function Consultar(item) {
     BuscarPorId(item.Id, "C"); // paso la accionABMC pq es asincrono la busqueda y luego de ejecutarse quiero cambiar el estado accionABMC
+    console.log('2');
   }
   function Modificar(item) {
     if (!item.Activo) {
@@ -83,13 +88,11 @@ function Personajes() {
   async function Agregar() {
     setAccionABMC("A");
     setItem({
-        IdArticulo: 0,
+        Id: 0,
         Nombre: '',
-        Precio: '',
-        Stock: '',
-        CodigoDeBarra: '',
-        IdArticuloFamilia: '',
-        FechaAlta: moment(new Date()).format("YYYY-MM-DD"),
+        FechaAparicion: moment(new Date()).format("YYYY-MM-DD"),
+        Bando: 'Neutral',
+        IdLugar: 0,
         Activo: true,
       });
     //modalDialogService.Alert("preparando el Alta...");
@@ -108,7 +111,7 @@ function Personajes() {
       undefined,
       undefined,
       async () => {
-        await personajesService.ActivarDesactivar(item);
+        await equiposService.ActivarDesactivar(item);
         await Buscar();
       }
     );
@@ -121,7 +124,7 @@ function Personajes() {
     // agregar o modificar
     try
     {
-      await personajesService.Grabar(item);
+      await equiposService.Grabar(item);
     }
     catch (error)
     {
@@ -149,11 +152,11 @@ function Personajes() {
   return (
     <div>
       <div className="tituloPagina">
-        Personajes <small>{TituloAccionABMC[AccionABMC]}</small>
+        Equipos <small>{TituloAccionABMC[AccionABMC]}</small>
       </div>
 
       {AccionABMC === "L" && (
-        <PersonajesBuscar
+        <BuscarTodos
           Nombre={Nombre}
           setNombre={setNombre}
           Activo={Activo}
@@ -165,7 +168,7 @@ function Personajes() {
 
       {/* Tabla de resutados de busqueda y Paginador */}
       {AccionABMC === "L" && Items?.length > 0 && (
-        <PersonajesListado
+        <EquiposListado
           {...{
             Items,
             Consultar,
@@ -189,11 +192,11 @@ function Personajes() {
 
       {/* Formulario de alta/modificacion/consulta */}
       {AccionABMC !== "L" && (
-        <PersonajesRegistro
-          {...{ AccionABMC, /* Equipos, Franquicias,  */Item, Grabar, Volver }}
+        <EquiposRegistro
+          {...{ AccionABMC, Lugares, Item, Grabar, Volver }}
         />
       )}
     </div>
   );
 }
-export { Personajes };
+export { Equipos };

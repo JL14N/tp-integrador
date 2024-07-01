@@ -5,9 +5,13 @@ const urlServidor = "http://localhost:3000"
 
 const urlResourcePersonajes = urlServidor + "/api/personajes";
 const urlResourcePoderes = urlServidor + "/api/poderes";
+const urlResourceEquipos = urlServidor + "/api/equipos";
+const urlResourceLugares = urlServidor + "/api/lugares";
 
 export const config = {
     urlServidor,
     urlResourcePersonajes,
     urlResourcePoderes,
+    urlResourceEquipos,
+    urlResourceLugares
 }

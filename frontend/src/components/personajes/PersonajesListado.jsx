@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { poderesService } from '../../services/poderes.service';
+import { equiposService } from '../../services/equipos.service';
 import { get, set } from "react-hook-form";
 
-export default function PersonajesListado({ Items, Consultar, Modificar, ActivarDesactivar }) {
+export default function PersonajesListado({ Items, Equipos, Consultar, Modificar, ActivarDesactivar, Imprimir, Pagina, RegistrosTotal, Paginas, Buscar}) {
   /* const [poderesPersonaje, setPoderesPersonaje] = useState(null); 
   
   useEffect(() => {
@@ -15,7 +16,13 @@ export default function PersonajesListado({ Items, Consultar, Modificar, Activar
     poderes.map((poder) => poder.NombrePoder).join(", ");
     setPoderesPersonaje(poderes);
   }*/
-
+  const [nombresEquipos, setNombresEquipos] = useState([]); 
+  useEffect(() => {
+    let listaNombres = new Array(Math.max(...Equipos.map((Equipo) => Equipo.Id)));
+    Equipos.forEach((Equipo) => listaNombres[Equipo.Id] = Equipo.Nombre);
+    setNombresEquipos(listaNombres)
+  }, []);
+  
   return (
     <div className="table-responsive">
       <table className="table table-hover table-sm table-bordered table-striped">
@@ -41,7 +48,7 @@ export default function PersonajesListado({ Items, Consultar, Modificar, Activar
                 </td>
                 <td className="text-end">{Item.PuntosPoder}</td>
                 {/* <td className="text-end">{getPoderes(Item.Id)}</td> */}
-                <td className="text-end">{Item.IdEquipo}</td>
+                <td className="text-end">{nombresEquipos[Item.IdEquipo]}</td>
                 <td className="text-end">{Item.IdFranquicia}</td>
                 <td>{Item.Activo ? "SI" : "NO"}</td>
                 <td className="text-center text-nowrap">
@@ -78,6 +85,37 @@ export default function PersonajesListado({ Items, Consultar, Modificar, Activar
             ))}
         </tbody>
       </table>
+
+            {/* Paginador*/}
+            <div className="paginador">
+        <div className="row">
+          <div className="col">
+            <span className="pyBadge">Registros: {RegistrosTotal}</span>
+          </div>
+          <div className="col text-center">
+            Pagina: &nbsp;
+            <select
+              value={Pagina}
+              onChange={(e) => {
+                Buscar(e.target.value);
+              }}
+            >
+              {Paginas?.map((x) => (
+                <option value={x} key={x}>
+                  {x}
+                </option>
+              ))}
+            </select>
+            &nbsp; de {Paginas?.length}
+          </div>
+
+          <div className="col">
+            <button className="btn btn-primary float-end" onClick={() => Imprimir()}>
+              <i className="fa fa-print"></i>Imprimir
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

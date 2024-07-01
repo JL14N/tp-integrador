@@ -4,7 +4,7 @@ const db = require('../base-orm/sequelize-init');
 const { Op, ValidationError } = require('sequelize');
 const auth = require('../seguridad/auth');
 
-router.get('/api/personajes', async function (req, res, next) {
+router.get('/api/equipos', async function (req, res, next) {
 
   let where = {};
   if (req.query.Nombre != undefined && req.query.Nombre !== '') {
@@ -19,15 +19,14 @@ router.get('/api/personajes', async function (req, res, next) {
   }
   const Pagina = req.query.Pagina ?? 1;
   const TamañoPagina = 10;
-  const { count, rows } = await db.personajes.findAndCountAll({
+  const { count, rows } = await db.equipos.findAndCountAll({
     attributes: [
       'Id',
       'Nombre',
       'FechaAparicion',
-      'PuntosPoder',
-      'IdEquipo',
-      'IdFranquicia',
-      'Activo',
+      "Bando",
+      "IdLugar",
+      "Activo",
     ],
     order: [['Nombre', 'ASC']],
     where,
@@ -38,33 +37,46 @@ router.get('/api/personajes', async function (req, res, next) {
   return res.json({ Items: rows, RegistrosTotal: count });
 });
 
-router.get('/api/personajes/:id', async function (req, res, next) {
-  // #swagger.tags = ['personajes']
-  // #swagger.summary = 'obtiene un personaje'
-  // #swagger.parameters['id'] = { description: 'identificador del personaje...' }
-  let items = await db.personajes.findOne({
-    attributes: [
-      'Id',
-      'Nombre',
-      'FechaAparicion',
-      'PuntosPoder',
-      'IdEquipo',
-      'IdFranquicia',
-      'Activo',
-    ],
-    where: { Id: req.params.id },
-  });
-  res.json(items);
+router.get('/api/equipos/:id', async function (req, res, next) {
+  // #swagger.tags = ['equipos']
+  // #swagger.summary = 'obtiene un equipo'
+  // #swagger.parameters['id'] = { description: 'identificador del equipo...' }
+  if (req.params.id == 0) {
+    let data = await db.equipos.findAll({
+      attributes: [
+        'Id',
+        'Nombre',
+        'FechaAparicion',
+        "Bando",
+        "IdLugar",
+        "Activo",
+      ],
+      order: [["Nombre", "ASC"]],
+    });
+    res.json(data);
+  } else {
+    let items = await db.equipos.findOne({
+      attributes: [
+        'Id',
+        'Nombre',
+        'FechaAparicion',
+        "Bando",
+        "IdLugar",
+        "Activo",
+      ],
+      where: { Id: req.params.id },
+    });
+    res.json(items);
+  }
 });
 
-router.post('/api/personajes/', async (req, res) => {
+router.post('/api/equipos/', async (req, res) => {
   try {
-    let data = await db.personajes.create({
+    let data = await db.equipos.create({
       Nombre: req.body.Nombre,
       FechaAparicion: req.body.FechaAparicion,
-      PuntosPoder: req.body.PuntosPoder,
-      IdEquipo: req.body.IdEquipo,
-      IdFranquicia: req.body.IdFranquicia,
+      Bando: req.body.Bando,
+      IdLugar: req.body.IdLugar,
       Activo: req.body.Activo,
     });
     res.status(200).json(data.dataValues); // devolvemos el registro agregado!
@@ -83,30 +95,28 @@ router.post('/api/personajes/', async (req, res) => {
   }
 });
 
-router.put('/api/personajes/:id', async (req, res) => {
+router.put('/api/equipos/:id', async (req, res) => {
   try {
-    let item = await db.personajes.findOne({
+    let item = await db.equipos.findOne({
       attributes: [
         'Id',
         'Nombre',
         'FechaAparicion',
-        'PuntosPoder',
-        'IdEquipo',
-        'IdFranquicia',
-        'Activo',
+        "Bando",
+        "IdLugar",
+        "Activo",
       ],
       where: { Id: req.params.id },
     });
     if (!item) {
-      res.status(404).json({ message: 'Personaje no encontrado' });
+      res.status(404).json({ message: 'Equipo no encontrado' });
       return;
     }
-    item.Nombre = req.body.Nombre;
-    item.FechaAparicion = req.body.FechaAparicion;
-    item.PuntosPoder = req.body.PuntosPoder;
-    item.IdEquipo = req.body.IdEquipo;
-    item.IdFranquicia = req.body.IdFranquicia;
-    item.Activo = req.body.Activo;
+    item.Nombre = req.body.Nombre,
+    item.FechaAparicion = req.body.FechaAparicion,
+    item.Bando = req.body.Bando,
+    item.IdLugar = req.body.IdLugar,
+    item.Activo = req.body.Activo,
 
     await item.save();
 
@@ -124,13 +134,13 @@ router.put('/api/personajes/:id', async (req, res) => {
   }
 });
 
-router.delete('/api/personajes/:id', async (req, res) => {
+router.delete('/api/equipos/:id', async (req, res) => {
 
   let bajaFisica = false;
 
   if (bajaFisica) {
     // baja fisica
-    let filasBorradas = await db.personajes.destroy({
+    let filasBorradas = await db.equipos.destroy({
       where: { Id: req.params.id },
     });
     if (filasBorradas == 1) res.sendStatus(200);
@@ -138,7 +148,7 @@ router.delete('/api/personajes/:id', async (req, res) => {
   } else {
     // baja lógica
     try {
-      let data = await db.personajes.update(
+      let data = await db.equipos.update(
         { Activo: db.sequelize.literal('CASE WHEN Activo = 1 THEN 0 ELSE 1 END') },
         { where: { Id: req.params.id } }
       );
@@ -160,7 +170,7 @@ router.delete('/api/personajes/:id', async (req, res) => {
 //-- SEGURIDAD ---------------------------
 //------------------------------------
 router.get(
-  '/api/personajesJWT',
+  '/api/equiposJWT',
   auth.authenticateJWT,
   async function (req, res, next) {
     const { rol } = res.locals.user;
@@ -168,15 +178,14 @@ router.get(
       return res.status(403).json({ message: 'usuario no autorizado!' });
     }
 
-    let items = await db.personajes.findAll({
+    let items = await db.equipos.findAll({
       attributes: [
         'Id',
         'Nombre',
         'FechaAparicion',
-        'PuntosPoder',
-        'IdEquipo',
-        'IdFranquicia',
-        'Activo',
+        "Bando",
+        "IdLugar",
+        "Activo",
       ],
       order: [['Nombre', 'ASC']],
     });

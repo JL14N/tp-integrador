@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 
 export default function PersonajesRegistro({
   AccionABMC,
-  /* Equipos,
-  Franquicias, */
+  Equipos,
+  // Franquicias,
   Item,
   Grabar,
   Volver,
@@ -120,17 +120,24 @@ export default function PersonajesRegistro({
             </div>
             <div className="col-sm-8 col-md-6">
               <select
-                name="IdEquipo"
-                className="form-control"
-                value={Item?.IdEquipo}
+                {...register("IdEquipo", {
+                  required: { value: true, message: "Equipo es requerido" },
+                })}
+                className={
+                  "form-control " +
+                  (errors?.IdEquipo ? "is-invalid" : "")
+                }
               >
-                {/* <option value="" key={1}></option>
-                {ArticulosFamilias?.map((x) => (
-                  <option value={x.IdArticuloFamilia} key={x.IdArticuloFamilia}>
+                <option value="" key={0}></option>
+                {Equipos?.map((x) => (
+                  <option key={x.Id} value={x.Id}>
                     {x.Nombre}
                   </option>
-                ))} */}
+                ))}
               </select>
+              <div className="invalid-feedback">
+                {errors?.IdEquipo?.message}
+              </div>
             </div>
           </div>
 

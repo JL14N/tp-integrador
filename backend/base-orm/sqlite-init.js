@@ -32,7 +32,7 @@ async function CrearBaseSiNoExiste() {
   if (res.contar > 0) existe = true;
   if (!existe) {
     await db.run(
-    `CREATE TABLE personajes_x_poderes (
+      `CREATE TABLE personajes_x_poderes (
       IdPersonaje INTEGER,
       NombrePoder TEXT NOT NULL,
       PRIMARY KEY (IdPersonaje, NombrePoder),
@@ -168,56 +168,122 @@ async function CrearBaseSiNoExiste() {
 
     await db.run(
       `INSERT INTO personajes (Nombre, FechaAparicion, PuntosPoder, IdEquipo, IdFranquicia) VALUES
-        ('Spider-Man', '1962-08-01', 85, 1, 1),
-        ('Batman', '1939-05-01', 90, 2, 2),
-        ('Iron Man', '1963-03-01', 95, 3, 1),
-        ('Wonder Woman', '1941-10-01', 88, 4, 2),
-        ('Captain America', '1941-03-01', 87, 5, 1),
-        ('Superman', '1938-06-01', 92, 6, 2),
-        ('Thor', '1962-08-01', 94, 7, 1),
-        ('Hulk', '1962-05-01', 89, 8, 1),
-        ('Black Widow', '1964-04-01', 84, 9, 1),
-        ('Flash', '1956-01-01', 86, 10, 2),
-        ('Green Lantern', '1940-07-01', 88, 11, 2),
-        ('Aquaman', '1941-11-01', 83, 12, 2),
-        ('Black Panther', '1966-07-01', 90, 13, 1),
-        ('Doctor Strange', '1963-07-01', 91, 14, 1),
-        ('Captain Marvel', '1967-03-01', 89, 15, 1),
-        ('Wolverine', '1974-10-01', 93, 16, 1),
-        ('Green Arrow', '1941-11-01', 85, 17, 2),
-        ('Deadpool', '1991-02-01', 88, 18, 1),
-        ('Catwoman', '1940-04-01', 82, 19, 2),
-        ('Ant-Man', '1962-01-01', 86, 20, 1),
-        ('Star-Lord', '1976-01-01', 87, 21, 1),
-        ('Gamora', '1975-02-01', 84, 22, 1),
-        ('Groot', '1960-11-01', 82, 23, 1),
-        ('Rocket Raccoon', '1976-01-01', 85, 24, 1),
-        ('Daredevil', '1964-04-01', 88, 25, 1),
-        ('Luke Cage', '1972-06-01', 86, 26, 1),
-        ('Jessica Jones', '2001-11-01', 83, 27, 1),
-        ('Punisher', '1974-02-01', 90, 28, 1),
-        ('Storm', '1975-05-01', 87, 29, 1),
-        ('Jean Grey', '1963-09-01', 91, 30, 1),
-        ('Cyclops', '1963-09-01', 85, 31, 1),
-        ('Rogue', '1981-08-01', 88, 32, 1),
-        ('Magneto', '1963-09-01', 93, 33, 1),
-        ('Professor X', '1963-09-01', 92, 34, 1),
-        ('Wonder Man', '1964-01-01', 86, 35, 1),
-        ('Scarlet Witch', '1964-03-01', 87, 36, 1),
-        ('Vision', '1968-10-01', 88, 37, 1),
-        ('Hawkeye', '1964-09-01', 84, 38, 1),
-        ('Winter Soldier', '2005-01-01', 85, 39, 1),
-        ('Falcon', '1969-09-01', 83, 40, 1),
-        ('Nick Fury', '1963-05-01', 86, 41, 1),
-        ('Black Canary', '1947-07-01', 82, 42, 2),
-        ('Martian Manhunter', '1955-11-01', 88, 43, 2),
-        ('Cyborg', '1980-06-01', 85, 44, 2),
-        ('Shazam', '1939-02-01', 90, 45, 2),
-        ('Harley Quinn', '1992-09-01', 86, 46, 2),
-        ('Robin', '1940-04-01', 82, 47, 2),
-        ('Nightwing', '1984-04-01', 84, 48, 2),
-        ('Batgirl', '1961-01-01', 83, 49, 2),
-        ('Supergirl', '1959-05-01', 85, 50, 2);`
+      ('Spider-Man', '1962-08-01', 85, 1, 1),
+      ('Batman', '1939-05-01', 90, 2, 2),
+      ('Iron Man', '1963-03-01', 95, 1, 1),
+      ('Wonder Woman', '1941-10-01', 88, 2, 2),
+      ('Captain America', '1941-03-01', 87, 1, 1),
+      ('Superman', '1938-06-01', 92, 2, 2),
+      ('Thor', '1962-08-01', 94, 1, 1),
+      ('Hulk', '1962-05-01', 89, 1, 1),
+      ('Black Widow', '1964-04-01', 84, 1, 1),
+      ('Flash', '1956-01-01', 86, 2, 2),
+      ('Green Lantern', '1940-07-01', 88, 2, 2),
+      ('Aquaman', '1941-11-01', 83, 2, 2),
+      ('Black Panther', '1966-07-01', 90, 1, 1),
+      ('Doctor Strange', '1963-07-01', 91, 1, 1),
+      ('Captain Marvel', '1967-03-01', 89, 1, 1),
+      ('Wolverine', '1974-10-01', 93, 3, 1),
+      ('Green Arrow', '1941-11-01', 85, 2, 2),
+      ('Deadpool', '1991-02-01', 88, 3, 1),
+      ('Catwoman', '1940-04-01', 82, 2, 2),
+      ('Ant-Man', '1962-01-01', 86, 1, 1),
+      ('Star-Lord', '1976-01-01', 87, 5, 1),
+      ('Gamora', '1975-02-01', 84, 5, 1),
+      ('Groot', '1960-11-01', 82, 5, 1),
+      ('Rocket Raccoon', '1976-01-01', 85, 5, 1),
+      ('Daredevil', '1964-04-01', 88, 6, 1),
+      ('Luke Cage', '1972-06-01', 86, 6, 1),
+      ('Jessica Jones', '2001-11-01', 83, 6, 1),
+      ('Punisher', '1974-02-01', 90, 6, 1),
+      ('Storm', '1975-05-01', 87, 3, 1),
+      ('Jean Grey', '1963-09-01', 91, 3, 1),
+      ('Cyclops', '1963-09-01', 85, 3, 1),
+      ('Rogue', '1981-08-01', 88, 3, 1),
+      ('Magneto', '1963-09-01', 93, 3, 1),
+      ('Professor X', '1963-09-01', 92, 3, 1),
+      ('Wonder Man', '1964-01-01', 86, 1, 1),
+      ('Scarlet Witch', '1964-03-01', 87, 1, 1),
+      ('Vision', '1968-10-01', 88, 1, 1),
+      ('Hawkeye', '1964-09-01', 84, 1, 1),
+      ('Winter Soldier', '2005-01-01', 85, 1, 1),
+      ('Falcon', '1969-09-01', 83, 1, 1),
+      ('Nick Fury', '1963-05-01', 86, 1, 1),
+      ('Black Canary', '1947-07-01', 82, 2, 2),
+      ('Martian Manhunter', '1955-11-01', 88, 2, 2),
+      ('Cyborg', '1980-06-01', 85, 2, 2),
+      ('Shazam', '1939-02-01', 90, 2, 2),
+      ('Harley Quinn', '1992-09-01', 86, 8, 2),
+      ('Robin', '1940-04-01', 82, 7, 2),
+      ('Nightwing', '1984-04-01', 84, 7, 2),
+      ('Batgirl', '1961-01-01', 83, 7, 2),
+      ('Supergirl', '1959-05-01', 85, 2, 2);`
+    );
+  }
+
+  existe = false;
+  res = await db.get(
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'equipos'",
+    []
+  );
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      `CREATE TABLE equipos (
+      Id INTEGER PRIMARY KEY AUTOINCREMENT,
+      Nombre TEXT NOT NULL,
+      FechaAparicion DATE,
+      Bando TEXT,
+      IdLugar INTEGER,
+      Activo BOOLEAN DEFAULT 1,
+      FOREIGN KEY (IdLugar) REFERENCES lugares(Id)
+      CHECK (Bando IN ('Héroes', 'Villanos', 'Neutral'))
+      );`
+    );
+    console.log("tabla equipos creada!");
+    await db.run(
+      `INSERT INTO equipos (Id, Nombre, FechaAparicion, Bando, IdLugar) VALUES
+      (1, 'Avengers', '1963-09-01', 'Héroes', 1),
+      (2, 'Justice League', '1960-03-01', 'Héroes', 2),
+      (3, 'X-Men', '1963-09-01', 'Héroes', 3),
+      (4, 'Fantastic Four', '1961-11-01', 'Héroes', 4),
+      (5, 'Guardians of the Galaxy', '1969-01-01', 'Héroes', 5),
+      (6, 'Defenders', '1971-12-01', 'Héroes', 6),
+      (7, 'Teen Titans', '1964-07-01', 'Héroes', 7),
+      (8, 'Suicide Squad', '1959-09-01', 'Neutral', 8),
+      (9, 'Inhumans', '1965-12-01', 'Héroes', 9),
+      (10, 'Legion of Super-Heroes', '1958-04-01', 'Héroes', 10);`
+    );
+  }
+
+  existe = false;
+  res = await db.get(
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'lugares'",
+    []
+  );
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      `CREATE TABLE lugares (
+      Id INTEGER PRIMARY KEY AUTOINCREMENT,
+      Nombre TEXT NOT NULL,
+      Existe BOOLEAN NOT NULL,
+      Ubicacion TEXT
+      );`
+    );
+    console.log("tabla lugares creada!");
+    await db.run(
+      `INSERT INTO lugares (Id, Nombre, Existe, Ubicacion) VALUES
+      (1, 'Avengers Tower', 1, 'New York City'),
+      (2, 'Hall of Justice', 1, 'Washington, D.C.'),
+      (3, 'X-Mansion', 1, 'Westchester County, New York'),
+      (4, 'Baxter Building', 1, 'New York City'),
+      (5, 'Knowhere', 1, 'Space'),
+      (6, 'Sanctum Sanctorum', 1, 'New York City'),
+      (7, 'Titans Tower', 0, 'Jump City'),
+      (8, 'Belle Reve', 1, 'Louisiana'),
+      (9, 'Attilan', 1, 'The Moon'),
+      (10, 'Legion Headquarters', 0, 'Metropolis');`
     );
   }
 
@@ -227,4 +293,4 @@ async function CrearBaseSiNoExiste() {
 
 CrearBaseSiNoExiste();
 
-module.exports =  CrearBaseSiNoExiste;
+module.exports = CrearBaseSiNoExiste;

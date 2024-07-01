@@ -57,6 +57,16 @@ function Menu() {
                 Poderes
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/equipos">
+                Equipos
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/lugares">
+                Lugares
+              </NavLink>
+            </li>
             {/* <li className="nav-item">
               <NavLink className="nav-link" title="exclusivo para administradores" to="/articulosjwt">
                 Articulos JWT

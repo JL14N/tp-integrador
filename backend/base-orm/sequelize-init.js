@@ -18,15 +18,6 @@ const personajes_x_poderes = sequelize.define(
     },
   },
   {
-    // pasar a mayusculas
-    hooks: {
-      beforeValidate: function (personajes_x_poderes, options) {
-        if (typeof personajes_x_poderes.Nombre === "string") {
-          personajes_x_poderes.Nombre = personajes_x_poderes.Nombre.toUpperCase().trim();
-        }
-      },
-    },
-
     timestamps: false,
   }
 );
@@ -64,16 +55,63 @@ const personajes = sequelize.define(
     },
   },
   {
-    // pasar a mayusculas
-    hooks: {
-      beforeValidate: function (personajes, options) {
-        if (typeof personajes.Nombre === "string") {
-          personajes.Nombre = personajes.Nombre.toUpperCase().trim();
-        }
-      },
-    },
-
     timestamps: false,
+  }
+);
+
+const equipos = sequelize.define(
+  "equipos",
+  {
+    Id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    Nombre: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    FechaAparicion: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    Bando: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    IdLugar: {
+      type: DataTypes.INTEGER,
+    },
+    Activo: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
+
+const lugares = sequelize.define(
+  'lugares',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    nombre: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    existe: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
+    },
+    ubicacion: DataTypes.TEXT
+  },
+  {
+    timestamps: false
   }
 );
 
@@ -81,4 +119,6 @@ module.exports = {
   sequelize,
   personajes_x_poderes,
   personajes,
+  equipos,
+  lugares
 };

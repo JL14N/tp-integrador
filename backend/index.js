@@ -41,6 +41,12 @@ app.use(poderesRouter);
 const personajesRouter = require("./routes/personajes");
 app.use(personajesRouter);
 
+const equiposRouter = require("./routes/equipos");
+app.use(equiposRouter);
+
+const lugaresRouter = require("./routes/lugares");
+app.use(lugaresRouter);
+
 const seguridadRouter = require("./routes/seguridad");
 app.use(seguridadRouter);
 

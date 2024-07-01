@@ -19,7 +19,7 @@ router.get("/api/poderes", async function (req, res, next) {
 router.get("/api/poderes/:id", async function (req, res, next) {
   try {
     const id = req.params.id;
-    const poderes = await db.Poder.findAll({
+    const poderes = await db.personajes_x_poderes.findAll({
       where: {
         IdPersonaje: id
       }

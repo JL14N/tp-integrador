@@ -1,5 +1,5 @@
 import React from "react";
-export default function ArticulosBuscar ({Nombre, setNombre, Activo, setActivo, Buscar, Agregar}) {
+export default function BuscarTodos ({Nombre, setNombre, Activo, setActivo, Buscar, Agregar}) {
 
     return (
     <form>
