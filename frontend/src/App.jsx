@@ -12,7 +12,7 @@ import { Footer } from "./components/Footer";
 import { ModalDialog } from "./components/ModalDialog";
 // import { ArticulosJWT } from "./components/articulosJWT/ArticulosJWT";
 // import { RequireAuth } from "./components/RequiereAuth";
-// import { Login } from "./components/login/Login";
+import { Login } from "./components/login/Login";
 
 
 
@@ -38,8 +38,8 @@ function App() {
                   <ArticulosJWT />
                 </RequireAuth>
               }
-            />
-            <Route path="/login/:componentFrom" element={<Login />} /> */}
+            />*/}
+            <Route path="/login/:componentFrom" element={<Login />} />
             <Route path="*" element={<Navigate to="/inicio" replace />} />
           </Routes>
         </div>

@@ -58,29 +58,37 @@ router.get('/api/personajes/:id', async function (req, res, next) {
 });
 
 router.post('/api/personajes/', async (req, res) => {
-  try {
-    let data = await db.personajes.create({
-      Nombre: req.body.Nombre,
-      FechaAparicion: req.body.FechaAparicion,
-      PuntosPoder: req.body.PuntosPoder,
-      IdEquipo: req.body.IdEquipo,
-      IdFranquicia: req.body.IdFranquicia,
-      Activo: req.body.Activo,
-    });
-    res.status(200).json(data.dataValues); // devolvemos el registro agregado!
-  } catch (err) {
-    if (err instanceof ValidationError) {
-      // si son errores de validación, los devolvemos
-      let messages = '';
-      err.errors.forEach(
-        (x) => (messages += (x.path ?? 'campo') + ': ' + x.message + '\n')
-      );
-      res.status(400).json({ message: messages });
-    } else {
-      // si son errores desconocidos, los dejamos que los controle el middleware de errores
-      throw err;
+  '/api/personajesJWT',
+    auth.authenticateJWT,
+    async function (req, res, next) {
+      const { rol } = res.locals.user;
+      if (rol !== 'admin') {
+        return res.status(403).json({ message: 'usuario no autorizado!' });
+      }
+      try {
+        let data = await db.personajes.create({
+          Nombre: req.body.Nombre,
+          FechaAparicion: req.body.FechaAparicion,
+          PuntosPoder: req.body.PuntosPoder,
+          IdEquipo: req.body.IdEquipo,
+          IdFranquicia: req.body.IdFranquicia,
+          Activo: req.body.Activo,
+        });
+        res.status(200).json(data.dataValues); // devolvemos el registro agregado!
+      } catch (err) {
+        if (err instanceof ValidationError) {
+          // si son errores de validación, los devolvemos
+          let messages = '';
+          err.errors.forEach(
+            (x) => (messages += (x.path ?? 'campo') + ': ' + x.message + '\n')
+          );
+          res.status(400).json({ message: messages });
+        } else {
+          // si son errores desconocidos, los dejamos que los controle el middleware de errores
+          throw err;
+        }
+      }
     }
-  }
 });
 
 router.put('/api/personajes/:id', async (req, res) => {

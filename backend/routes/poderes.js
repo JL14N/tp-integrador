@@ -16,9 +16,9 @@ router.get("/api/poderes", async function (req, res, next) {
   res.json(data);
 });
 
-router.get("/api/poderes/:id", async function (req, res, next) {
+router.get("/api/poderes/:idPersonaje", async function (req, res, next) {
   try {
-    const id = req.params.id;
+    const id = req.params.idPersonaje;
     const poderes = await db.personajes_x_poderes.findAll({
       where: {
         IdPersonaje: id
@@ -27,7 +27,7 @@ router.get("/api/poderes/:id", async function (req, res, next) {
     if (poderes.length > 0) {
       res.json(poderes);
     } else {
-      res.status(404).send('No poderes found with the given id.');
+      res.status(404).send('No poderes found with the given idPersonaje.');
     }
   } catch (error) {
     next(error);
