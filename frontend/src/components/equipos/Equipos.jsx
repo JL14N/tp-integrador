@@ -62,19 +62,14 @@ function Equipos() {
   }
 
   async function BuscarPorId(id, accionABMC) {
-    console.log('0');
     const data = await equiposService.BuscarPorId(id);
-    console.log(',5');
     setItem(data);
-    console.log(',75');
     setAccionABMC(accionABMC);
-    console.log('1');
   }
   
 
   function Consultar(item) {
     BuscarPorId(item.Id, "C"); // paso la accionABMC pq es asincrono la busqueda y luego de ejecutarse quiero cambiar el estado accionABMC
-    console.log('2');
   }
   function Modificar(item) {
     if (!item.Activo) {

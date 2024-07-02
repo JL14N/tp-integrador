@@ -1,53 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import moment from "moment";
+import { franquiciasService } from '../../services/franquicias.service';
+import { get, set } from "react-hook-form";
 
-export default function PersonajesListado({
-  Items,
-  Equipos,
-  Franquicias,
-  Consultar,
-  Modificar,
-  ActivarDesactivar,
-  Imprimir,
-  Pagina,
-  RegistrosTotal,
-  Paginas,
-  Buscar})
-  {
-  /* const [poderesPersonaje, setPoderesPersonaje] = useState(null); 
-  
-  useEffect(() => {
-    Items.forEach((Item) => BuscarPoderes(Item.Id));
-  }, []);
-
-  async function BuscarPoderes(id) {
-    const poderes = await poderesService.BuscarPorIdPersonaje(id);
-    poderes.map((poder) => poder.NombrePoder).join(", ");
-    setPoderesPersonaje(poderes);
-  }*/
-  const [nombresEquipos, setNombresEquipos] = useState(new Map());
-  const [nombresFranquicias, setNombresFranquicias] = useState(new Map());
-  useEffect(() => {
-    let mapaNombresEquipos = new Map();
-    Equipos.forEach((Equipo) => mapaNombresEquipos.set(Equipo.Id, Equipo.Nombre));
-    setNombresEquipos(mapaNombresEquipos)
-    
-    let mapaNombresFranquicias = new Map();
-    Franquicias.forEach((Franquicia) => mapaNombresFranquicias.set(Franquicia.Id, Franquicia.Nombre));
-    setNombresFranquicias(mapaNombresFranquicias)
-  }, []);
-  
+export default function PeliculasListado({ Items, Consultar, Modificar, ActivarDesactivar, Imprimir, Pagina, RegistrosTotal, Paginas, Buscar}) {
   return (
     <div className="table-responsive">
       <table className="table table-hover table-sm table-bordered table-striped">
         <thead>
           <tr>
             <th className="text-center">Nombre</th>
-            <th className="text-center">Fecha de Aparicion</th>
-            <th className="text-center">Puntos de Poder</th>
-            {/* <th className="text-center">Poderes</th> */}
-            <th className="text-center">Equipo</th>
-            <th className="text-center">Franquicia</th>
+            <th className="text-center">Fecha de Estreno</th>
+            <th className="text-center">Rating</th>
             <th className="text-center">Activo</th>
             <th className="text-center text-nowrap">Acciones</th>
           </tr>
@@ -58,12 +22,9 @@ export default function PersonajesListado({
               <tr key={Item.Id}>
                 <td>{Item.Nombre}</td>
                 <td className="text-end">
-                  {moment(Item.FechaAparicion).format("DD/MM/YYYY")}
+                  {moment(Item.FechaEstreno).format("DD/MM/YYYY")}
                 </td>
-                <td className="text-end">{Item.PuntosPoder}</td>
-                {/* <td className="text-end">{getPoderes(Item.Id)}</td> */}
-                <td className="text-end">{nombresEquipos.get(Item.IdEquipo)}</td>
-                <td className="text-end">{nombresFranquicias.get(Item.IdFranquicia)}</td>
+                <td className="text-end">{Item.Rating}</td>
                 <td>{Item.Activo ? "SI" : "NO"}</td>
                 <td className="text-center text-nowrap">
                   <button
@@ -100,8 +61,8 @@ export default function PersonajesListado({
         </tbody>
       </table>
 
-            {/* Paginador*/}
-            <div className="paginador">
+      {/* Paginador*/}
+      <div className="paginador">
         <div className="row">
           <div className="col">
             <span className="pyBadge">Registros: {RegistrosTotal}</span>

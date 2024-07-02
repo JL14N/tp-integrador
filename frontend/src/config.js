@@ -7,11 +7,15 @@ const urlResourcePersonajes = urlServidor + "/api/personajes";
 const urlResourcePoderes = urlServidor + "/api/poderes";
 const urlResourceEquipos = urlServidor + "/api/equipos";
 const urlResourceLugares = urlServidor + "/api/lugares";
+const urlResourcePeliculas = urlServidor + "/api/peliculas";
+const urlResourceFranquicias = urlServidor + "/api/franquicias";
 
 export const config = {
     urlServidor,
     urlResourcePersonajes,
     urlResourcePoderes,
     urlResourceEquipos,
-    urlResourceLugares
+    urlResourceLugares,
+    urlResourcePeliculas,
+    urlResourceFranquicias
 }

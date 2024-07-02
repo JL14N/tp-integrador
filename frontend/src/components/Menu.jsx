@@ -67,44 +67,20 @@ function Menu() {
                 Lugares
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/peliculas">
+                Peliculas
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/franquicias">
+                Franquicias
+              </NavLink>
+            </li>
             {/* <li className="nav-item">
               <NavLink className="nav-link" title="exclusivo para administradores" to="/articulosjwt">
                 Articulos JWT
               </NavLink>
-            </li> */}
-
-
-            {/* <li className="nav-item dropdown bg-dark">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#!"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Informes
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <a className="dropdown-item" href="#!">
-                    Ventas
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#!">
-                    Compras
-                  </a>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#!">
-                    Libro de IVA
-                  </a>
-                </li>
-              </ul>
             </li> */}
           </ul>
 

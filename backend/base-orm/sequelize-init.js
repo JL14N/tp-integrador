@@ -95,20 +95,76 @@ const equipos = sequelize.define(
 const lugares = sequelize.define(
   'lugares',
   {
-    id: {
+    Id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    nombre: {
+    Nombre: {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    existe: {
+    Existe: {
       type: DataTypes.BOOLEAN,
       allowNull: false
     },
-    ubicacion: DataTypes.TEXT
+    Ubicacion: DataTypes.TEXT
+  },
+  {
+    timestamps: false
+  }
+);
+
+const peliculas = sequelize.define(
+  "peliculas",
+  {
+    Id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    Nombre: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    FechaEstreno: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    Rating: {
+      type: DataTypes.REAL,
+      allowNull: false,
+    },
+    IdFranquicia: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    Activo: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
+
+const franquicias = sequelize.define(
+  'franquicias',
+  {
+    Id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
+    Nombre: {
+      type: DataTypes.TEXT,
+      allowNull: false
+    },
+    FechaFundacion: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
   },
   {
     timestamps: false
@@ -120,5 +176,7 @@ module.exports = {
   personajes_x_poderes,
   personajes,
   equipos,
-  lugares
+  lugares,
+  peliculas,
+  franquicias
 };

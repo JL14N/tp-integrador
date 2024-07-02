@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import BuscarTodos from "../Buscar";
-import PersonajesListado from "./PersonajesListado";
-import PersonajesRegistro from "./PersonajesRegistro";
-import { personajesService } from "../../services/personajes.service";
-import { poderesService } from "../../services/poderes.service";
-import { equiposService } from "../../services/equipos.service";
+import PeliculasListado from "./PeliculasListado";
+import PeliculasRegistro from "./PeliculasRegistro";
+import { peliculasService } from "../../services/peliculas.service";
 import { franquiciasService } from "../../services/franquicias.service";
 import modalDialogService from "../../services/modalDialog.service";
 
 
 
-function Personajes() {
+function Peliculas() {
   const TituloAccionABMC = {
     A: "(Agregar)",
     B: "(Eliminar)",
@@ -30,26 +28,14 @@ function Personajes() {
   const [Pagina, setPagina] = useState(1);
   const [Paginas, setPaginas] = useState([]);
 
-  const [Poderes, setPoderes] = useState(null);
-  const [Equipos, setEquipos] = useState(null);
   const [Franquicias, setFranquicias] = useState(null);
 
   // cargar al "montar" el componente, solo la primera vez (por la dependencia [])
   useEffect(() => {
-    async function BuscarPoderes() {
-      let data = await poderesService.Buscar();
-      setPoderes(data);
-    }
-    async function BuscarEquipos() {
-      let data = await equiposService.BuscarPorId(0);
-      setEquipos(data);
-    }
     async function BuscarFranquicias() {
       let data = await franquiciasService.Buscar();
       setFranquicias(data);
     }
-    BuscarPoderes();
-    BuscarEquipos();
     BuscarFranquicias();
   }, []);
 
@@ -62,7 +48,7 @@ function Personajes() {
       _pagina = Pagina;
     }
     modalDialogService.BloquearPantalla(true);
-    const data = await personajesService.Buscar(Nombre, Activo, _pagina);
+    const data = await peliculasService.Buscar(Nombre, Activo, _pagina);
     modalDialogService.BloquearPantalla(false);
     setItems(data.Items);
     setRegistrosTotal(data.RegistrosTotal);
@@ -76,11 +62,11 @@ function Personajes() {
   }
 
   async function BuscarPorId(id, accionABMC) {
-    const data = await personajesService.BuscarPorId(id);
+    const data = await peliculasService.BuscarPorId(id);
     setItem(data);
     setAccionABMC(accionABMC);
   }
-
+  
 
   function Consultar(item) {
     BuscarPorId(item.Id, "C"); // paso la accionABMC pq es asincrono la busqueda y luego de ejecutarse quiero cambiar el estado accionABMC
@@ -97,14 +83,12 @@ function Personajes() {
   async function Agregar() {
     setAccionABMC("A");
     setItem({
-      Id: 0,
-      Nombre: '',
-      FechaAparicion: moment(new Date()).format("YYYY-MM-DD"),
-      PuntosPoder: 0,
-      IdEquipo: 0,
-      IdFranquicia: 0,
-      Activo: true,
-    });
+        Id: 0,
+        Nombre: '',
+        FechaEstreno: moment(new Date()).format("YYYY-MM-DD"),
+        IdFranquicia: 0,
+        Activo: true,
+      });
     //modalDialogService.Alert("preparando el Alta...");
   }
 
@@ -115,42 +99,44 @@ function Personajes() {
   async function ActivarDesactivar(item) {
     modalDialogService.Confirm(
       "Esta seguro que quiere " +
-      (item.Activo ? "desactivar" : "activar") +
-      " el registro?",
+        (item.Activo ? "desactivar" : "activar") +
+        " el registro?",
       undefined,
       undefined,
       undefined,
       async () => {
-        await personajesService.ActivarDesactivar(item);
+        await peliculasService.ActivarDesactivar(item);
         await Buscar();
       }
     );
 
   }
-
-
+  
+  
 
   async function Grabar(item) {
     // agregar o modificar
-    try {
-      await personajesService.Grabar(item);
+    try
+    {
+      await peliculasService.Grabar(item);
     }
-    catch (error) {
+    catch (error)
+    {
       modalDialogService.Alert(error?.response?.data?.message ?? error.toString())
       return;
     }
     await Buscar();
     Volver();
-
+  
     //setTimeout(() => {
-    modalDialogService.Alert(
-      "Registro " +
-      (AccionABMC === "A" ? "agregado" : "modificado") +
-      " correctamente."
-    );
+      modalDialogService.Alert(
+        "Registro " +
+          (AccionABMC === "A" ? "agregado" : "modificado") +
+          " correctamente."
+      );
     //}, 0);
   }
-
+  
 
   // Volver/Cancelar desde Agregar/Modificar/Consultar
   function Volver() {
@@ -160,7 +146,7 @@ function Personajes() {
   return (
     <div>
       <div className="tituloPagina">
-        Personajes <small>{TituloAccionABMC[AccionABMC]}</small>
+        Peliculas <small>{TituloAccionABMC[AccionABMC]}</small>
       </div>
 
       {AccionABMC === "L" && (
@@ -176,11 +162,9 @@ function Personajes() {
 
       {/* Tabla de resutados de busqueda y Paginador */}
       {AccionABMC === "L" && Items?.length > 0 && (
-        <PersonajesListado
+        <PeliculasListado
           {...{
             Items,
-            Equipos,
-            Franquicias,
             Consultar,
             Modificar,
             ActivarDesactivar,
@@ -202,11 +186,11 @@ function Personajes() {
 
       {/* Formulario de alta/modificacion/consulta */}
       {AccionABMC !== "L" && (
-        <PersonajesRegistro
-          {...{ AccionABMC, Poderes, Equipos, Franquicias, Item, Grabar, Volver }}
+        <PeliculasRegistro
+          {...{ AccionABMC, Franquicias, Item, Grabar, Volver }}
         />
       )}
     </div>
   );
 }
-export { Personajes };
+export { Peliculas };

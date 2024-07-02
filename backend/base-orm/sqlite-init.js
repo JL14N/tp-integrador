@@ -160,8 +160,8 @@ async function CrearBaseSiNoExiste() {
         IdEquipo INTEGER,
         IdFranquicia INTEGER NOT NULL,
         Activo BOOLEAN DEFAULT 1,
-        FOREIGN KEY (IdEquipo) REFERENCES Equipo(Id),
-        FOREIGN KEY (IdFranquicia) REFERENCES Franquicia(Id)
+        FOREIGN KEY (IdEquipo) REFERENCES equipos(Id),
+        FOREIGN KEY (IdFranquicia) REFERENCES franquicias(Id)
         );`
     );
     console.log("tabla personajes creada!");
@@ -284,6 +284,80 @@ async function CrearBaseSiNoExiste() {
       (8, 'Belle Reve', 1, 'Louisiana'),
       (9, 'Attilan', 1, 'The Moon'),
       (10, 'Legion Headquarters', 0, 'Metropolis');`
+    );
+  }
+
+  existe = false;
+  res = await db.get(
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'peliculas'",
+    []
+  );
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      `CREATE TABLE peliculas (
+      Id INTEGER PRIMARY KEY AUTOINCREMENT,
+      Nombre TEXT NOT NULL,
+      FechaEstreno DATE,
+      Rating REAL,
+      IdFranquicia INTEGER,
+      Activo BOOLEAN DEFAULT 1,
+      FOREIGN KEY (IdFranquicia) REFERENCES franquicias(Id)
+      );`
+    );
+    console.log("tabla peliculas creada!");
+    await db.run(
+      `INSERT INTO peliculas (Id, Nombre, FechaEstreno, IdFranquicia, Rating) VALUES
+      (1, 'Iron Man', '2008-05-02', 1, 8.5),
+      (2, 'The Incredible Hulk', '2008-06-13', 1, 7.0),
+      (3, 'Thor', '2011-05-06', 1, 7.0),
+      (4, 'Captain America: The First Avenger', '2011-07-22', 1, 7.0),
+      (5, 'The Avengers', '2012-05-04', 1, 8.0),
+      (6, 'Guardians of the Galaxy', '2014-08-01', 1, 8.0),
+      (7, 'Guardians of the Galaxy Vol. 2', '2017-05-05', 1, 7.5),
+      (8, 'Fantastic Four', '2005-07-08', 5, 5.7),
+      (9, 'Fantastic Four: Rise of the Silver Surfer', '2007-06-15', 5, 5.6),
+      (10, 'Man of Steel', '2013-06-14', 2, 7.1),
+      (11, 'Batman v Superman: Dawn of Justice', '2016-03-25', 2, 6.5),
+      (12, 'Wonder Woman', '2017-06-02', 2, 7.5),
+      (13, 'Justice League', '2017-11-17', 2, 6.3),
+      (14, 'Aquaman', '2018-12-21', 2, 7.0),
+      (15, 'X-Men', '2000-07-14', 3, 7.4),
+      (16, 'X2: X-Men United', '2003-05-02', 3, 7.4),
+      (17, 'X-Men: The Last Stand', '2006-05-26', 3, 6.7),
+      (18, 'X-Men: First Class', '2011-06-03', 3, 7.7),
+      (19, 'X-Men: Days of Future Past', '2014-05-23', 3, 8.0),
+      (20, 'X-Men: Apocalypse', '2016-05-27', 3, 6.9),
+      (21, 'Spider-Man', '2002-05-03', 4, 7.3),
+      (22, 'Spider-Man 2', '2004-06-30', 4, 7.4),
+      (23, 'Spider-Man 3', '2007-05-04', 4, 6.2),
+      (24, 'The Amazing Spider-Man', '2012-07-03', 4, 6.9),
+      (25, 'The Amazing Spider-Man 2', '2014-05-02', 4, 6.6);`
+    );
+  }
+
+  existe = false;
+  res = await db.get(
+    "SELECT count(*) as contar FROM sqlite_schema WHERE type = 'table' and name= 'franquicias'",
+    []
+  );
+  if (res.contar > 0) existe = true;
+  if (!existe) {
+    await db.run(
+      `CREATE TABLE franquicias (
+      Id INTEGER PRIMARY KEY AUTOINCREMENT,
+      Nombre TEXT NOT NULL,
+      FechaFundacion DATE
+      );`
+    );
+    console.log("tabla franquicias creada!");
+    await db.run(
+      `INSERT INTO franquicias (Id, Nombre, FechaFundacion) VALUES
+      (1, 'Marvel Cinematic Universe', '2008-05-02'),
+      (2, 'DC Extended Universe', '2013-06-14'),
+      (3, 'X-Men', '2000-07-14'),
+      (4, 'Spider-Man', '2002-05-03'),
+      (5, 'Fantastic Four', '2005-07-08');`
     );
   }
 

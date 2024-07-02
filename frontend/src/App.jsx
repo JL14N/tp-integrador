@@ -5,6 +5,8 @@ import { Poderes } from "./components/Poderes";
 import { Personajes } from "./components/personajes/Personajes";
 import { Equipos } from "./components/equipos/Equipos";
 import { Lugares } from "./components/Lugares";
+import { Peliculas } from "./components/peliculas/Peliculas";
+import { Franquicias } from "./components/Franquicias";
 import { Menu } from "./components/Menu";
 import { Footer } from "./components/Footer";
 import { ModalDialog } from "./components/ModalDialog";
@@ -27,6 +29,8 @@ function App() {
             <Route path="/personajes" element={<Personajes />} />
             <Route path="/equipos" element={<Equipos />} />
             <Route path="/lugares" element={<Lugares />} />
+            <Route path="/peliculas" element={<Peliculas />} />
+            <Route path="/franquicias" element={<Franquicias />} />
             {/* <Route
               path="/articulosjwt"
               element={

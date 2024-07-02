@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-export default function PersonajesRegistro({
+export default function PeliculasRegistro({
   AccionABMC,
-  Poderes,
-  Equipos,
   Franquicias,
   Item,
   Grabar,
@@ -19,19 +17,6 @@ export default function PersonajesRegistro({
   const onSubmit = (data) => {
     Grabar(data);
   };
-
-  const [nombresPoderes, setNombresPoderes] = useState(new Map());
-  useEffect(() => {
-    let mapaNombresPoderes = new Map();
-    Poderes.forEach((Poder) => {
-      if (!mapaNombresPoderes.has(Poder.IdPersonaje)) {
-        mapaNombresPoderes.set(Poder.IdPersonaje, [Poder.NombrePoder]);
-      } else {
-        mapaNombresPoderes.get(Poder.IdPersonaje).push(Poder.NombrePoder);
-      }
-    });
-    setNombresPoderes(mapaNombresPoderes);
-  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -73,104 +58,25 @@ export default function PersonajesRegistro({
             </div>
           </div>
 
-          {/* campo FechaAparicion */}
+          {/* campo FechaEstreno */}
           <div className="row">
             <div className="col-sm-4 col-md-3 offset-md-1">
-              <label className="col-form-label" htmlFor="FechaAparicion">
-                Fecha Aparicion<span className="text-danger">*</span>:
+              <label className="col-form-label" htmlFor="FechaEstreno">
+                Fecha Estreno<span className="text-danger">*</span>:
               </label>
             </div>
             <div className="col-sm-8 col-md-6">
               <input
                 type="date"
-                {...register("FechaAparicion", {
-                  required: { value: true, message: "Fecha Aparicion es requerido" }
+                {...register("FechaEstreno", {
+                  required: { value: true, message: "Fecha Estreno es requerido" }
                 })}
                 className={
-                  "form-control " + (errors?.FechaAparicion ? "is-invalid" : "")
+                  "form-control " + (errors?.FechaEstreno ? "is-invalid" : "")
                 }
               />
               <div className="invalid-feedback">
-                {errors?.FechaAparicion?.message}
-              </div>
-            </div>
-          </div>
-
-          {/* campo PuntosPoder */}
-          <div className="row">
-            <div className="col-sm-4 col-md-3 offset-md-1">
-              <label className="col-form-label" htmlFor="PuntosPoder">
-                Puntos Poder<span className="text-danger">*</span>:
-              </label>
-            </div>
-            <div className="col-sm-8 col-md-6">
-              <input
-                type="number"
-                {...register("PuntosPoder", {
-                  required: { value: true, message: "Puntos Poder es requerido" },
-                  min: {
-                    value: 0,
-                    message: "Puntos Poder debe ser mayor a 0",
-                  },
-                  max: {
-                    value: 100,
-                    message: "Puntos Poder debe ser menor o igual a 100",
-                  },
-                })}
-                className={
-                  "form-control " + (errors?.PuntosPoder ? "is-invalid" : "")
-                }
-              />
-              <div className="invalid-feedback">{errors?.PuntosPoder?.message}</div>
-            </div>
-          </div>
-
-          {/* campo Poderes */}
-          { AccionABMC === "C" && nombresPoderes.has(Item.Id) && (
-            <div className="row">
-              <div className="col-sm-4 col-md-3 offset-md-1">
-                <label className="col-form-label" htmlFor="Poderes">
-                  Poderes<span className="text-danger">*</span>:
-                </label>
-              </div>
-              <div className="col-sm-8 col-md-6">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="Poderes"
-                  value={nombresPoderes.get(Item.Id).join(", ")}
-                  readOnly
-                />
-              </div>
-            </div>
-          )}
-
-          {/* campo IdEquipo */}
-          <div className="row">
-            <div className="col-sm-4 col-md-3 offset-md-1">
-              <label className="col-form-label" htmlFor="IdEquipo">
-                Equipo<span className="text-danger">*</span>:
-              </label>
-            </div>
-            <div className="col-sm-8 col-md-6">
-              <select
-                {...register("IdEquipo", {
-                  required: { value: true, message: "Equipo es requerido" },
-                })}
-                className={
-                  "form-control " +
-                  (errors?.IdEquipo ? "is-invalid" : "")
-                }
-              >
-                <option value="" key={0}></option>
-                {Equipos?.map((x) => (
-                  <option key={x.Id} value={x.Id}>
-                    {x.Nombre}
-                  </option>
-                ))}
-              </select>
-              <div className="invalid-feedback">
-                {errors?.IdEquipo?.message}
+                {errors?.FechaEstreno?.message}
               </div>
             </div>
           </div>
@@ -185,7 +91,7 @@ export default function PersonajesRegistro({
             <div className="col-sm-8 col-md-6">
               <select
                 {...register("IdFranquicia", {
-                  required: { value: true, message: "Franquicia Equipo es requerido" },
+                  required: { value: true, message: "Franquicia es requerido" },
                 })}
                 className={
                   "form-control " +
@@ -202,6 +108,36 @@ export default function PersonajesRegistro({
               <div className="invalid-feedback">
                 {errors?.IdFranquicia?.message}
               </div>
+            </div>
+          </div>
+
+          {/* campo Rating */}
+          <div className="row">
+            <div className="col-sm-4 col-md-3 offset-md-1">
+              <label className="col-form-label" htmlFor="Rating">
+                Rating<span className="text-danger">*</span>:
+              </label>
+            </div>
+            <div className="col-sm-8 col-md-6">
+              <input
+                type="number"
+                step=".1"
+                {...register("Rating", {
+                  required: { value: true, message: "Rating es requerido" },
+                  min: {
+                    value: 0,
+                    message: "Rating debe ser mayor a 0",
+                  },
+                  max: {
+                    value: 10,
+                    message: "Puntos Poder debe ser menor o igual a 10",
+                  },
+                })}
+                className={
+                  "form-control " + (errors?.Rating ? "is-invalid" : "")
+                }
+              />
+              <div className="invalid-feedback">{errors?.Rating?.message}</div>
             </div>
           </div>
 

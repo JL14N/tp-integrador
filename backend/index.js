@@ -47,6 +47,12 @@ app.use(equiposRouter);
 const lugaresRouter = require("./routes/lugares");
 app.use(lugaresRouter);
 
+const peliculasRouter = require("./routes/peliculas");
+app.use(peliculasRouter);
+
+const franquiciasRouter = require("./routes/franquicias");
+app.use(franquiciasRouter);
+
 const seguridadRouter = require("./routes/seguridad");
 app.use(seguridadRouter);
 
